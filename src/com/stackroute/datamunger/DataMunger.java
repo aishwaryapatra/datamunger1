@@ -129,7 +129,7 @@ public class DataMunger {
 	            {
 	                for (int j=i+1;j<arr.length;j++)
 	                {
-	                    if (arr[j].equals("order by")||arr[j].equals("group by"))
+	                    if (arr[j].equals("order")||arr[j].equals("group"))
 	                    {
 	                        break;
 	                    }
@@ -169,7 +169,7 @@ public class DataMunger {
 			return null;
 		}
 		String [] arr = queryString.split("where")[1].trim().split("group by | order by")[0].trim().split(" and | or ");
-		System.out.println(Arrays.toString(arr));
+		//System.out.println(Arrays.toString(arr));
 		return arr;
 	}
 
@@ -238,7 +238,11 @@ public class DataMunger {
 		}
 
      String [] arr = queryString.split("group by")[1].trim().split(",");
-		
+	
+     for(String p : arr) {
+    	 System.out.println(p);
+     }
+     
      return arr;
 
 	}
