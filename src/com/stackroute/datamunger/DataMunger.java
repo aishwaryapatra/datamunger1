@@ -164,10 +164,13 @@ public class DataMunger {
 	public String[] getConditions(String queryString) {
 		
 		queryString = queryString.toLowerCase();
-		int pos1 = queryString.indexOf("where");
-		if (pos1 == -1) {
+		if(!queryString.contains("where")) {
 			return null;
 		}
+//		int pos1 = queryString.indexOf("where");
+//		if (pos1 == -1) {
+//			return null;
+//		}
 		String [] arr = queryString.split("where")[1].trim().split("group by | order by")[0].trim().split(" and | or ");
 		//System.out.println(Arrays.toString(arr));
 		return arr;
