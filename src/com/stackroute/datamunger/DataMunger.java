@@ -1,4 +1,5 @@
 package com.stackroute.datamunger;
+import java.util.*;
 
 /*There are total 5 DataMungertest files:
  * 
@@ -34,8 +35,11 @@ public class DataMunger {
 	 */
 
 	public String[] getSplitStrings(String queryString) {
+		queryString=queryString.toLowerCase();
+		String arr[]=queryString.split(" ",-1);
+		return arr;
 
-		return null;
+		
 	}
 
 	/*
@@ -47,8 +51,16 @@ public class DataMunger {
 	 */
 
 	public String getFileName(String queryString) {
+		int index=0;
+		//int pos1=queryString.indexOf("from") +5;
+		String arr[]=queryString.split(" ");
+		for(int i=0;i<arr.length;i++) {
+			if(arr[i].equals("from"))
+			index=i;
+		}
+		String name=arr[index+1];
 
-		return null;
+		return name;
 	}
 
 	/*
@@ -62,8 +74,15 @@ public class DataMunger {
 	 */
 	
 	public String getBaseQuery(String queryString) {
+		int pos1=queryString.indexOf("from") +5;
+		int pos2 = queryString.indexOf(" ",pos1);
+        if(pos2 == -1)
+            pos2 = queryString.length();
+            
+        
+        queryString = queryString.substring(0,pos2);
 
-		return null;
+		return queryString;
 	}
 
 	/*
@@ -79,8 +98,9 @@ public class DataMunger {
 	 */
 	
 	public String[] getFields(String queryString) {
-
-		return null;
+		String arr[]=queryString.split(" ")[1].split(",");
+		
+		return arr;
 	}
 
 	/*
@@ -94,8 +114,31 @@ public class DataMunger {
 	 */
 	
 	public String getConditionsPartQuery(String queryString) {
+		queryString = queryString.toLowerCase();
+		 String arr[]=queryString.split(" ",-1);
+		 String temp="";
+	        for (int i=0;i<arr.length;i++)
+	        {
+	            
+	            if (arr[i].equals("where"))
+	            {
+	                for (int j=i+1;j<arr.length;j++)
+	                {
+	                    if (arr[j].equals("order by")||arr[j].equals("group by"))
+	                    {
+	                        break;
+	                    }
+	                    else
+	                    {
+	                        temp=temp.concat(" "+arr[j]);
+	                    }
+	                    
+	                }
+	                break;
+	            }
+	        }
+	        return temp.trim();
 
-		return null;
 	}
 
 	/*
@@ -114,8 +157,14 @@ public class DataMunger {
 	 */
 
 	public String[] getConditions(String queryString) {
-
-		return null;
+		queryString=queryString.toLowerCase();
+		 if(!queryString.contains("where"))
+	        {
+	            return null;
+	        }
+        String [] arrofStr = queryString.split("where")[1].trim().split("group by | order by")[0].trim().split(" and | or ");
+	
+		return arrofStr;
 	}
 
 	/*
@@ -130,8 +179,24 @@ public class DataMunger {
 	 */
 
 	public String[] getLogicalOperators(String queryString) {
-
-		return null;
+		int pos=queryString.indexOf("where");
+		if(pos==-1) {
+			return null;
+		}
+		String arr[]=queryString.split(" ");
+		ArrayList<String> ar= new ArrayList<String>();
+		for(int i=0;i<arr.length;i++) {
+			if(arr[i].equals("and")|| arr[i].equals("or")) {
+				ar.add(arr[i]);
+			}
+		}
+		String str[] = new String[ar.size()];
+		
+		for (int j = 0; j < ar.size(); j++) { 
+            str[j] = ar.get(j); 
+        } 
+  
+        return str; 
 	}
 
 	/*
@@ -143,8 +208,12 @@ public class DataMunger {
 	 */
 
 	public String[] getOrderByFields(String queryString) {
-
-		return null;
+		if (!queryString.contains("order by")) {
+			return null;
+		}
+		String [] arr = queryString.split("order by")[1].trim().split(" ");
+		
+        return arr;
 	}
 
 	/*
@@ -157,8 +226,14 @@ public class DataMunger {
 	 */
 
 	public String[] getGroupByFields(String queryString) {
+		if (!queryString.contains("group by")) {
+			return null;
+		}
 
-		return null;
+     String [] arr = queryString.split("group by")[1].trim().split(" ");
+		
+     return arr;
+
 	}
 
 	/*
@@ -173,7 +248,30 @@ public class DataMunger {
 
 	public String[] getAggregateFunctions(String queryString) {
 
+		if(queryString.contains("sum") || queryString.contains("count") 
+				|| queryString.contains("max") || queryString.contains("min")
+				|| queryString.contains("avg"))
+		{
+			ArrayList<String> ar = new ArrayList<String>();
+			String [] arr = queryString.split(" ")[1].trim().split(",");
+		
+			for (int i=0;i < arr.length;i++) {
+				if (arr[i].contains("(")) {
+					ar.add(arr[i]);
+					
+				}
+			}
+			String str[] = new String[ar.size()];
+			
+			for (int j = 0; j < ar.size(); j++) { 
+	            str[j] = ar.get(j); 
+	        } 
+	  
+	        return str; 
+			
+		}
 		return null;
+	
 	}
 
 }
