@@ -115,7 +115,12 @@ public class DataMunger {
 	
 	public String getConditionsPartQuery(String queryString) {
 		queryString = queryString.toLowerCase();
-		 String arr[]=queryString.split(" ",-1);
+		String arr[]=getSplitStrings(queryString);
+		 if(!queryString.contains("where"))
+	        {
+	            return null;
+	        }
+	        
 		 String temp="";
 	        for (int i=0;i<arr.length;i++)
 	        {
@@ -157,14 +162,15 @@ public class DataMunger {
 	 */
 
 	public String[] getConditions(String queryString) {
-		queryString=queryString.toLowerCase();
-		 if(!queryString.contains("where"))
-	        {
-	            return null;
-	        }
-        String [] arrofStr = queryString.split("where")[1].trim().split("group by | order by")[0].trim().split(" and | or ");
-	
-		return arrofStr;
+		
+		queryString = queryString.toLowerCase();
+		int pos1 = queryString.indexOf("where");
+		if (pos1 == -1) {
+			return null;
+		}
+		String [] arr = queryString.split("where")[1].trim().split("group by | order by")[0].trim().split(" and | or ");
+		System.out.println(Arrays.toString(arr));
+		return arr;
 	}
 
 	/*
@@ -226,6 +232,7 @@ public class DataMunger {
 	 */
 
 	public String[] getGroupByFields(String queryString) {
+		queryString=queryString.toLowerCase();
 		if (!queryString.contains("group by")) {
 			return null;
 		}
