@@ -239,9 +239,9 @@ public class DataMunger {
 
      String [] arr = queryString.split("group by")[1].trim().split(",");
 	
-     for(String p : arr) {
-    	 System.out.println(p);
-     }
+//     for(String p : arr) {
+//    	 System.out.println(p);
+//     }
      
      return arr;
 
