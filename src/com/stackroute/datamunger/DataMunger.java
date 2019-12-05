@@ -217,7 +217,7 @@ public class DataMunger {
 		if (!queryString.contains("order by")) {
 			return null;
 		}
-		String [] arr = queryString.split("order by")[1].trim().split(" ");
+		String [] arr = queryString.split("order by")[1].trim().split(",");
 		
         return arr;
 	}
@@ -237,7 +237,7 @@ public class DataMunger {
 			return null;
 		}
 
-     String [] arr = queryString.split("group by")[1].trim().split(" ");
+     String [] arr = queryString.split("group by")[1].trim().split(",");
 		
      return arr;
 
